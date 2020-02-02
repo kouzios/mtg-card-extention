@@ -2,15 +2,16 @@
 window.onload = function() {
     let cards = document.getElementById('cards');
     let clear = document.getElementById('clear');
+    let copy = document.getElementById('copy');
 
-    cards.addEventListener('click', copy);
+    copy.addEventListener('click', copyField);
     cards.addEventListener('change', change);
-
     clear.addEventListener('click', clearField);
 
-    function copy() {
+    function copyField() {
         cards.select();
         document.execCommand('copy');
+        window.getSelection().removeAllRanges();
     }
 
     function change() {
