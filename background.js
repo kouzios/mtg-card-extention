@@ -15,15 +15,13 @@ chrome.runtime.onInstalled.addListener(function(details) {
         chrome.declarativeContent.onPageChanged.addRules([rule2]);
     });
 
-    if(details.reason == "install") {
-        chrome.contextMenus.create({id: new Date().getTime().toString(), title: "Copy", contexts:["selection"]});
-        chrome.contextMenus.onClicked.addListener(copySelection)
-        chrome.storage.sync.set({cards: ''});
-    }
+    chrome.contextMenus.create({id: "mtg-card-extension", title: "Copy", contexts:["selection"]});
 });
+
 /* End setup rules */
 
 /* Start context menus */
+
 copySelection = function(info) {
     chrome.storage.sync.get('cards', function(data) {
         if(data.cards == undefined || data.cards == null || 
@@ -46,11 +44,15 @@ copySelection = function(info) {
     })
 }
 
+chrome.contextMenus.onClicked.addListener(copySelection)
+chrome.storage.sync.set({cards: ''});
+
 /**
  * Parse out any unintended mana cost symbols from the card name
  */
 function parseText(card) {
-    return card.split("{")[0]
+    var manaLess = card.split("{")[0]
+    return manaLess.split("/")[0]
 }
 
 /**
