@@ -11,5 +11,3 @@ allows for easy storing so that the deck list can be copy-pasted later.
 - Then enable developer mode
 - Clicked "Load Unpacked", and load the folder containing this repository
 - Bam! You're loaded.
-
-Alternatively, it's [on the Chrome store](https://chrome.google.com/webstore/detail/mtg-card-extension/lbnboalpeabmmdnhdagcoiilapplcidc)
