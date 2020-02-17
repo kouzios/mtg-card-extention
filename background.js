@@ -1,7 +1,7 @@
 /* Start setup rules */
 var conditions = [
     new chrome.declarativeContent.PageStateMatcher({
-      css: ["body"]
+      css: ["html"]
     })
 ];
 
@@ -10,26 +10,33 @@ var rule2 = {
     actions: [ new chrome.declarativeContent.ShowPageAction() ]
 };
 
+
 chrome.runtime.onInstalled.addListener(function(details) {
+    chrome.storage.sync.set({cards: ''});
+
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         chrome.declarativeContent.onPageChanged.addRules([rule2]);
     });
 
-    chrome.contextMenus.create({id: "mtg-card-extension", title: "Copy", contexts:["selection"]});
+    chrome.contextMenus.create({id: "copy", title: "Copy", contexts:["selection"]});
+
+    chrome.contextMenus.onClicked.addListener(copySelection)
 });
 
 /* End setup rules */
 
-/* Start context menus */
-
+/* Start functions */
 copySelection = function(info) {
     chrome.storage.sync.get('cards', function(data) {
-        if(data.cards == undefined || data.cards == null || 
-                info.selectionText == undefined || info.selectionText == null || info.selectionText == '') {
+        if(data.cards == undefined || data.cards == null) {
+            chrome.storage.sync.set({cards: ''});
+        }
+
+        if(info.selectionText == undefined || info.selectionText == null || info.selectionText == '') {
             return;
         }
 
-        var card = '1x ' + parseText(info.selectionText)
+        var card = parseText(info.selectionText)
         if(exist(card, data.cards)) {
             return;
         }
@@ -44,8 +51,6 @@ copySelection = function(info) {
     })
 }
 
-chrome.contextMenus.onClicked.addListener(copySelection)
-chrome.storage.sync.set({cards: ''});
 
 /**
  * Parse out any unintended mana cost symbols from the card name
