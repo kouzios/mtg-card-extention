@@ -19,15 +19,12 @@ window.onload = function() {
     }
 
     function clearField() {
-        chrome.storage.sync.set({cards: ''}, function() {
-            cards.value = '';
-            cards.setAttribute('value', '');
-        });
+        chrome.storage.sync.set({cards: ''});
+        cards.value = ''
     }
     
     chrome.storage.sync.get('cards', function(data) {
         cards.value = data.cards;
-        cards.setAttribute('value', data.cards);
     });
 };
 

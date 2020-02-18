@@ -28,6 +28,11 @@ chrome.runtime.onInstalled.addListener(function(details) {
 /* Start functions */
 copySelection = function(info) {
     chrome.storage.sync.get('cards', function(data) {
+        if(data.cards == undefined || data.cards == null) {
+            chrome.storage.sync.set({cards: ''});
+            return;
+        }
+
         if(data.cards == undefined || data.cards == null || info.selectionText == undefined ||
              info.selectionText == null || info.selectionText == '') {
             return;
