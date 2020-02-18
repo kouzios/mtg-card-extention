@@ -5,17 +5,12 @@ window.onload = function() {
     let copy = document.getElementById('copy');
 
     copy.addEventListener('click', copyField);
-    cards.addEventListener('change', change);
     clear.addEventListener('click', clearField);
 
     function copyField() {
         cards.select();
         document.execCommand('copy');
         window.getSelection().removeAllRanges();
-    }
-
-    function change() {
-        chrome.storage.sync.set({cards: cards.value}, null);
     }
 
     function clearField() {

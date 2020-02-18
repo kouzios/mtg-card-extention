@@ -29,17 +29,19 @@ chrome.runtime.onInstalled.addListener(function(details) {
 copySelection = function(info) {
     chrome.storage.sync.get('cards', function(data) {
         if(data.cards == undefined || data.cards == null) {
+            console.log("Cards undefined")
             chrome.storage.sync.set({cards: ''});
             return;
         }
 
-        if(data.cards == undefined || data.cards == null || info.selectionText == undefined ||
-             info.selectionText == null || info.selectionText == '') {
+        if(info.selectionText == undefined || info.selectionText == null || info.selectionText == '') {
+            console.log("Info selection text undefined")
             return;
         }
 
         var card = parseText(info.selectionText)
-        if(exist(card, data.cards)) {
+        if(exist(card, data.cards.split("\n"))) {
+            console.log("Already exists")
             return;
         }
 
@@ -49,6 +51,7 @@ copySelection = function(info) {
         }
 
         var newdata = data.cards.concat(newline + card)
+        console.log(newdata)
         chrome.storage.sync.set({cards: newdata});
     })
 }
